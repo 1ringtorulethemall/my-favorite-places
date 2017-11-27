@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Settings</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list no-border>
+    <ion-list-header>
+      <ion-icon name='locate' item-start></ion-icon>Geolocation
+    </ion-list-header>
+    <ion-item>
+      <ion-toggle checked="true" color="energized"></ion-toggle>
+      <ion-label>
+        <h2>Foreground geolocation</h2>
+        <p text-wrap><i>? plus précis</i></p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-toggle checked="true" color="energized"></ion-toggle>
+      <ion-label>
+        <h2>Background geolocation</h2>
+        <p text-wrap><i>? plus économe en énergie</i></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <form (submit)="doSubmit($event)" [formGroup]="langForm">
+    <ion-list radio-group formControlName="maps">
+
+      <ion-list-header>
+        <ion-icon name='map' item-start></ion-icon>
+        <h2>Cartes</h2>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>
+          <h2>Open street Map</h2>
+          <p text-wrap><i>Le meilleur choix pour une consultation offline (nécessite d'avoir auparavant chargé la carte en y allant)</i></p>
+        </ion-label>
+        <ion-radio value="osm" checked="true"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <h2>Google map</h2>
+          <p text-wrap><i>Dépendant du réseau mais bénéficie de toutes les fonctionnalités google</i></p>
+          <p text-wrap><i>? Reste en cache 15 jours</i></p>
+        </ion-label>
+        <ion-radio value="gm"></ion-radio>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
+  <ion-list>
+    <ion-list-header>
+      accuracy,... @geolo params
+    </ion-list-header>
+    <ion-item>
+      <ion-range [(ngModel)]="brightness">
+        <ion-icon range-left small name="sunny"></ion-icon>
+        <ion-icon range-right name="sunny"></ion-icon>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-range min="-200" max="200" pin="true" [(ngModel)]="contrast" color="secondary">
+        <ion-icon range-left small name="contrast"></ion-icon>
+        <ion-icon range-right name="contrast"></ion-icon>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-range dualKnobs="true" pin="true" [(ngModel)]="structure" color="dark">
+        <ion-icon range-left small name="brush"></ion-icon>
+        <ion-icon range-right name="brush"></ion-icon>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-range min="1000" max="2000" step="100" snaps="true" [(ngModel)]="warmth" color="danger">
+        <ion-icon range-left small color="danger" name="thermometer"></ion-icon>
+        <ion-icon range-right color="danger" name="thermometer"></ion-icon>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      Adjust Text
+    </ion-list-header>
+    <ion-item>
+      <ion-range min="-100" step="10" snaps="true" [(ngModel)]="text">
+        <!-- voir le css-->
+        <ion-label range-left class="small-text">A</ion-label>
+        <ion-label range-right>A</ion-label>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

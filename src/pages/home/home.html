@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      My favorite Places
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+
+  <ion-card *ngFor="let af of af$ | async; let img of imgUrls | async; let i=index ">
+    <img src={{af.imgUrl}} />
+    <div class="card-title">{{af?.name}}</div>
+    <div class="card-subtitle">{{af.date}}</div>
+    <ion-fab center bottom>
+      <button ion-fab mini color="light"><ion-icon name="eye"></ion-icon></button>
+      <ion-fab-list side="left">
+        <button ion-fab color="dark" (click)="goToPlacePage(af)"><ion-icon name="paper"></ion-icon></button>
+        <button ion-fab color="dark"><ion-icon name="ice-cream"></ion-icon></button>
+      </ion-fab-list>
+      <ion-fab-list side="right">
+        <button ion-fab color="dark"><ion-icon name="pin"></ion-icon></button>
+      </ion-fab-list>
+    </ion-fab>
+
+  </ion-card>
+
+</ion-content>

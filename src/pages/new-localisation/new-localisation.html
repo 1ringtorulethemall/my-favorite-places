@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Ajouter un lieu</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <!-- AJOUTER UNE IMAGE-->
+    <div *ngIf="createStep==1">
+      <img src="assets/imgs/place-template.jpg" />
+      <ion-fab center middle clear>
+        <button ion-fab color="light"><ion-icon name="add"></ion-icon></button>
+        <ion-fab-list side="left">
+          <button ion-fab color="dark" (click)="importFromGallery()"><ion-icon name="images"></ion-icon></button>
+        </ion-fab-list>
+        <ion-fab-list side="right">
+          <button ion-fab color="dark" (click)="importFromCamera()"><ion-icon name="camera"></ion-icon></button>
+        </ion-fab-list>
+      </ion-fab>
+    </div>
+
+    <img [src]="captureDataUrl" *ngIf="captureDataUrl && createStep>1" />
+
+
+    <!-- To test the camera : ionic cordova run browser -->
+
+    <ion-item *ngIf="createStep==2">
+      <ion-icon name="pin" item-start large></ion-icon>
+      <h2>Géolocalisation :</h2>
+      <p>Latitude : {{locationTracker.lat}}</p>
+      <p>Longitude : {{locationTracker.lng}}</p>
+      <p>Altitude : {{locationTracker.alt}}</p>
+      <p *ngIf="locationTracker.isWatching">{{trackingNfo}}</p>
+
+    <button ion-button clear item-end large *ngIf="!locationTracker.isWatching" (click)="startTracking()">
+      <ion-icon name="locate" color="danger"></ion-icon> OFF
+    </button>
+    <button ion-button clear item-end large *ngIf="locationTracker.isWatching" (click)="stopTracking()">
+      <ion-icon name="locate" color="secondary"></ion-icon> ON
+    </button>
+    </ion-item>
+
+  <ion-item>
+    <ion-icon name="paper" item-start large></ion-icon>
+    <h2>Ajouter des informations :</h2>
+  </ion-item>
+  <ion-list inset>
+
+    <ion-item>
+      <ion-label stacked>Nom de la fiche:</ion-label>
+      <ion-input type="text" placeholder="Ajouter ici le nom de la fiche" [(ngModel)]="pName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Note de terrain :</ion-label>
+      <ion-textarea placeholder="Ajouter ici la note de terrain" [(ngModel)]="pNote"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button full color="light" (click)="addImageToPlace()">Enregistrer</button>
+
+</ion-content>

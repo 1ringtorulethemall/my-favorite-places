@@ -4,9 +4,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { LocationTrackerProvider } from '../providers/location-tracker/location-tracker';
+import { LocationTrackerProvider } from '../shared/providers/location-tracker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
+
+import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
+import { OrientationTrackerProvider } from '../shared/providers/orientation-tracker';
+import { CompassComponent } from "../components/compass/compass";
+
 import { Camera } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -21,9 +26,12 @@ import { NotesPage } from '../pages/notes/notes';
 
 import { SettingsPage } from '../pages/settings/settings';
 import { PlacePage } from '../pages/place/place';
-import { MapPage } from '../pages/map/map';
+import { MapOsmPage } from '../pages/map/osm/map-osm';
+import { MapGooglePage } from '../pages/map/google/map-google';
 
+import { TruncatePipe } from '../shared/pipes/truncate-pipe';
 
+import { Insomnia } from '@ionic-native/insomnia';
 
 @NgModule({
   declarations: [
@@ -34,7 +42,10 @@ import { MapPage } from '../pages/map/map';
     NotesPage,
     SettingsPage,
     PlacePage,
-    MapPage
+    MapOsmPage,
+    MapGooglePage,
+    CompassComponent,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,
@@ -51,7 +62,8 @@ import { MapPage } from '../pages/map/map';
     NotesPage,
     SettingsPage,
     PlacePage,
-    MapPage
+    MapOsmPage,
+    MapGooglePage
   ],
   providers: [
     StatusBar,
@@ -60,6 +72,9 @@ import { MapPage } from '../pages/map/map';
     LocationTrackerProvider,
     BackgroundGeolocation,
     Geolocation,
+    DeviceOrientation,
+    OrientationTrackerProvider,
+    Insomnia,
     Camera
   ]
 })

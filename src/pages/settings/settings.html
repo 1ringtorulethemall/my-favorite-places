@@ -4,95 +4,142 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content no-padding>
 
-  <ion-list no-border>
+  <ion-list>
     <ion-list-header>
-      <ion-icon name='locate' item-start></ion-icon>Geolocation
+      <ion-icon name='moon' item-start></ion-icon>
+      <h2 text-uppercase>Mode veille</h2>
     </ion-list-header>
     <ion-item>
-      <ion-toggle checked="true" color="energized"></ion-toggle>
+      <ion-label>
+        <h2>Empêcher la veille de l'appareil</h2>
+        <p text-wrap><i>...Tant que l'application est ouverte. Pratique lors de la consultation des cartes via la boussole et la géolocalisation</i></p>
+      </ion-label>
+      <ion-toggle [(ngModel)]="getData().global.insomnia" color="energized" (ngModelChange)="switchInsomnia()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-list radio-group>
+    <ion-list-header>
+      <ion-icon name='planet' item-start></ion-icon>
+      <h2 text-uppercase>Langue de l'interface</h2>
+      <!--<ion-badge item-end>"{{getData().language.fr?"fr":"en"}}"</ion-badge>-->
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        <h2>Français</h2>
+      </ion-label>
+      <ion-radio [checked]="getData().language.fr==true" (click)="switchLanguage()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Anglais</h2>
+      </ion-label>
+      <ion-radio [checked]="getData().language.en==true" (click)="switchLanguage()"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+  <ion-list radio-group>
+    <ion-list-header>
+      <ion-icon name='swap' item-start></ion-icon>
+      <h2 text-uppercase>Unités de longueur</h2>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        <h2>Système métrique (m/km)</h2>
+      </ion-label>
+      <ion-radio [checked]="getData().units.metric==true" (click)="switchUnits()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Système impérial (mi/ft)</h2>
+      </ion-label>
+      <ion-radio [checked]="getData().units.imperial==true" (click)="switchUnits()"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-icon name='locate' item-start></ion-icon>
+      <h2 text-uppercase>Géolocalisation</h2>
+    </ion-list-header>
+    <ion-item>
       <ion-label>
         <h2>Foreground geolocation</h2>
-        <p text-wrap><i>? plus précis</i></p>
+        <p text-wrap><i>Le plus précis</i></p>
       </ion-label>
+      <ion-toggle [(ngModel)]="getData().geolocation.foreground" color="energized" (ngModelChange)="setFgGeolocation()"></ion-toggle>
     </ion-item>
     <ion-item>
-      <ion-toggle checked="true" color="energized"></ion-toggle>
       <ion-label>
         <h2>Background geolocation</h2>
-        <p text-wrap><i>? plus économe en énergie</i></p>
+        <p text-wrap><i>Plus économe en énergie mais bien moins précis</i></p>
+      </ion-label>
+      <ion-toggle [(ngModel)]="getData().geolocation.background" color="energized" (ngModelChange)="setBgGeolocation()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-icon name='compass' item-start></ion-icon>
+      <h2 text-uppercase>Compass</h2>
+      <ion-badge item-end>{{getData().compass.frequency}}ms</ion-badge>
+    </ion-list-header>
+    <ion-item no-lines>
+      <ion-label class="label-above-range">
+        <h2>Frequency</h2>
+        <p text-wrap><i>Mise à jour de la boussole en millisecondes. </i></p>
       </ion-label>
     </ion-item>
-  </ion-list>
-
-  <form (submit)="doSubmit($event)" [formGroup]="langForm">
-    <ion-list radio-group formControlName="maps">
-
-      <ion-list-header>
-        <ion-icon name='map' item-start></ion-icon>
-        <h2>Cartes</h2>
-      </ion-list-header>
-
-      <ion-item>
-        <ion-label>
-          <h2>Open street Map</h2>
-          <p text-wrap><i>Le meilleur choix pour une consultation offline (nécessite d'avoir auparavant chargé la carte en y allant)</i></p>
-        </ion-label>
-        <ion-radio value="osm" checked="true"></ion-radio>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>
-          <h2>Google map</h2>
-          <p text-wrap><i>Dépendant du réseau mais bénéficie de toutes les fonctionnalités google</i></p>
-          <p text-wrap><i>? Reste en cache 15 jours</i></p>
-        </ion-label>
-        <ion-radio value="gm"></ion-radio>
-      </ion-item>
-
-    </ion-list>
-  </form>
-
-  <ion-list>
-    <ion-list-header>
-      accuracy,... @geolo params
-    </ion-list-header>
-    <ion-item>
-      <ion-range [(ngModel)]="brightness">
-        <ion-icon range-left small name="sunny"></ion-icon>
-        <ion-icon range-right name="sunny"></ion-icon>
-      </ion-range>
-    </ion-item>
-    <ion-item>
-      <ion-range min="-200" max="200" pin="true" [(ngModel)]="contrast" color="secondary">
-        <ion-icon range-left small name="contrast"></ion-icon>
-        <ion-icon range-right name="contrast"></ion-icon>
-      </ion-range>
-    </ion-item>
-    <ion-item>
-      <ion-range dualKnobs="true" pin="true" [(ngModel)]="structure" color="dark">
-        <ion-icon range-left small name="brush"></ion-icon>
-        <ion-icon range-right name="brush"></ion-icon>
-      </ion-range>
-    </ion-item>
-    <ion-item>
-      <ion-range min="1000" max="2000" step="100" snaps="true" [(ngModel)]="warmth" color="danger">
-        <ion-icon range-left small color="danger" name="thermometer"></ion-icon>
-        <ion-icon range-right color="danger" name="thermometer"></ion-icon>
+    <ion-item no-lines class="range-over-prev-item">
+      <ion-range min="100" max="1000" step="100" pin="true" snaps="true" [(ngModel)]="getData().compass.frequency" color="primary">
+        <ion-icon range-left small color="primary" name="timer"></ion-icon>
+        <ion-icon range-right color="primary" name="timer"></ion-icon>
       </ion-range>
     </ion-item>
   </ion-list>
 
-  <ion-list>
+  <ion-list radio-group>
     <ion-list-header>
-      Adjust Text
+      <ion-icon name='map' item-start></ion-icon>
+      <h2 text-uppercase>Cartes</h2>
     </ion-list-header>
     <ion-item>
-      <ion-range min="-100" step="10" snaps="true" [(ngModel)]="text">
-        <!-- voir le css-->
-        <ion-label range-left class="small-text">A</ion-label>
-        <ion-label range-right>A</ion-label>
+      <ion-label>
+        <h2>Open street Map</h2>
+        <p text-wrap><i>Le meilleur choix pour une consultation offline (nécessite d'avoir auparavant chargé la carte en y allant)</i></p>
+      </ion-label>
+      <ion-radio [checked]="getData().maps.osm==true" (click)="switchMapProvider()"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Google map</h2>
+        <p text-wrap><i>Dépendant du réseau mais bénéficie de toutes les fonctionnalités google</i></p>
+        <p text-wrap><i>? Reste en cache 15 jours</i></p>
+      </ion-label>
+      <ion-radio [checked]="getData().maps.google==true" (click)="switchMapProvider()"></ion-radio>
+    </ion-item>
+  </ion-list>
+
+  <!--TODO préciser 16/9 et proposer 4/3 -->
+  <!--TODO proposer quality range 50/80 -->
+  <ion-list no-border>
+    <ion-list-header>
+      <ion-icon name='image' item-start></ion-icon>
+      <h2 text-uppercase>Taille des images</h2>
+      <ion-badge item-end>{{getData().image.width}}x{{getData().image.height}}px</ion-badge>
+    </ion-list-header>
+    <ion-item no-lines>
+      <ion-label>
+        <p text-wrap><i>Largeur par hauteur. Une taille de 592x333px est un bon compromis entre qualité et capacité de stockage.</i></p>
+      </ion-label>
+
+    </ion-item>
+    <ion-item no-lines>
+      <ion-range min="300" max="1000" pin="true" [(ngModel)]="getData().image.width" (ngModelChange)="setImageSize()" color="secondary">
+        <ion-icon range-left small name="resize"></ion-icon>
+        <ion-icon range-right name="resize"></ion-icon>
       </ion-range>
     </ion-item>
   </ion-list>

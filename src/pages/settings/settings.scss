@@ -1,9 +1,42 @@
-page-settings {
-  ion-list + ion-list {
-    margin-top: 0;
+settings {
+  ion-content {
+    background-color: #efeff4 !important;
   }
 
-  .small-text {
-    font-size: 10px;
+  ion-list-header {
+    color: #000 !important;
+    margin-bottom: 0;
+    border-top: 1px #a4a4a4 !important;
+    border-bottom: 1px #f4f4f4 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-style: outset !important;
+    background-color: #efeff4 !important;
   }
+
+  ion-list-header h2 {
+    font-size: 1em !important;
+  }
+
+  .list-header {
+    margin-bottom: 0;
+  }
+
+  .item-inner {
+    margin-left: 0 !important;
+  }
+  /*  ion-list-header *******************/
+  ion-label p {
+    font-size: 0.8em !important;
+    color: #888888 !important;
+  }
+
+  .label-above-range {
+    margin-bottom: 0 !important;
+  }
+  /* TODO : remonter le range mais avec le pin qui passe sur le texte
+  ion-range {
+    padding-top: 0px !important;
+  }
+  */
 }

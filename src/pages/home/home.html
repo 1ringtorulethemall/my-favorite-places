@@ -8,21 +8,24 @@
 
 <ion-content class="card-background-page">
 
-  <ion-card *ngFor="let af of af$ | async; let img of imgUrls | async; let i=index ">
-    <img src={{af.imgUrl}} />
-    <div class="card-title">{{af?.name}}</div>
-    <div class="card-subtitle">{{af.date}}</div>
-    <ion-fab center bottom>
-      <button ion-fab mini color="light"><ion-icon name="eye"></ion-icon></button>
-      <ion-fab-list side="left">
-        <button ion-fab color="dark" (click)="goToPlacePage(af)"><ion-icon name="paper"></ion-icon></button>
-        <button ion-fab color="dark"><ion-icon name="ice-cream"></ion-icon></button>
-      </ion-fab-list>
-      <ion-fab-list side="right">
-        <button ion-fab color="dark"><ion-icon name="pin"></ion-icon></button>
-      </ion-fab-list>
-    </ion-fab>
+  <ion-card *ngFor="let af of af$ | async">
+    <img src="{{af.dataImg}}" />
+    <div class="card-title text-shadow">{{af?.name | limitChar :'23'}}</div>
+    <div class="card-subtitle text-shadow">{{af.dDay}}-{{af.dMonth}}-{{af.dYear}}</div>
+    <ion-fab center bottom #fab>
+      <button ion-fab mini color="light"><ion-icon name="ios-document-outline"></ion-icon></button>
 
+      <ion-fab-list side="left">
+        <button ion-fab color="dark"><ion-icon name="create"></ion-icon></button>
+        <button ion-fab color="dark" (click)="deleteConfirmation(af)"><ion-icon name="trash"></ion-icon></button>
+      </ion-fab-list>
+
+      <ion-fab-list side="right">
+        <button ion-fab color="dark" (click)="goToPlacePage(af,fab)"><ion-icon name="eye"></ion-icon></button>
+        <button ion-fab color="dark"><ion-icon name="walk"></ion-icon></button>
+      </ion-fab-list>
+
+    </ion-fab>
   </ion-card>
 
 </ion-content>

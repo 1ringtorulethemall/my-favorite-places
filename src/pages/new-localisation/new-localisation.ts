@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { NavController, AlertController, AlertOptions } from 'ionic-angular';
+import { AlertController, AlertOptions } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import firebase from 'firebase'; // pictures storage
@@ -7,8 +7,9 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Camera } from '@ionic-native/camera';
 import { CameraOptions } from '@ionic-native/camera';
 
-import { LocationTrackerProvider } from '../../providers/location-tracker/location-tracker';
-import { Place } from '../../shared/placeInterface'
+import { LocationTrackerProvider } from '../../shared/providers/location-tracker';
+import { Place } from '../../shared/placeInterface';
+import { dataSettings } from '../../pages/settings/dataSettings';
 
 @Component({
   selector: 'page-new-localisation',
@@ -27,8 +28,7 @@ export class NewLocalisationPage {
 
   public pName: string = '';
   public pNote: string = '';
-
-  captureDataUrl: string;
+  pDataImg: string; // base64 image
 
   constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone) {
 
@@ -43,13 +43,11 @@ export class NewLocalisationPage {
 
   }
 
-  ionViewDidLoad() {
-    this.initialize();
-  }
+  ionViewDidLoad() { this.initialize(); }
 
   initialize() {
     this.createStep = 1;
-    this.captureDataUrl = undefined;// clear the previous photo data in the variable
+    this.pDataImg = undefined;
   }
 
   /* STEP1 Choose a file - camera vs local storage image gallery *************/
@@ -63,19 +61,19 @@ export class NewLocalisationPage {
   // TODO: crop image
   importFromCamera() {
     this.createStep = 2;
-
-    // TODO: adjust cam options
+    //aa datas trop grosses, passe pas
+    // TODO: adjust cam options + fix acceptable image size ( @settings)
     const cameraOptions: CameraOptions = {
+      targetWidth: dataSettings.image.width,
+      targetHeight: dataSettings.image.height,
       quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
     };
 
-    this.camera.getPicture(cameraOptions).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64:
-      this.captureDataUrl = 'data:image/jpeg;base64,' + imageData;
+    this.camera.getPicture(cameraOptions).then((dataImg) => {
+      this.pDataImg = 'data:image/jpeg;base64,' + dataImg; // base64 encoded string for firecloud storage (offline workaround )
 
       //this.startTracking();
 
@@ -84,7 +82,6 @@ export class NewLocalisationPage {
     });
 
   }
-
 
   /* STEP2 Capture Position **************************************************/
 
@@ -111,28 +108,9 @@ export class NewLocalisationPage {
 
   }
 
-  /* STEP ... save */
-  addImageToPlace(): void {
-    //  uploadImage
+  /* FINAL STEP ... save ******************************************************/
 
-    // Create a timestamp as filename
-    const filename = Math.floor(Date.now() / 1000);
-    // Create a reference to 'images/todays-date.jpg'
-    const imageRef = this.storageRef.child(`imgs/${filename}.jpg`);
-
-    imageRef.putString(this.captureDataUrl, firebase.storage.StringFormat.DATA_URL)
-      .then((snapshot) => {
-        console.log("ok upload image")
-        imageRef.getDownloadURL().then((url) => {
-          this.zone.run(() => {
-            this.addNfosToPlace(url);
-          })
-        })
-      });
-
-  }
-
-  addNfosToPlace(url: string) {
+  addPlace() {
 
     if (this.pNote && this.pNote.trim().length && this.pName && this.pName.trim().length && this.locationTracker.lat && this.locationTracker.lng) {
       //if (this.pNote && this.pNote.trim().length && this.pName && this.pName.trim().length) {
@@ -149,19 +127,28 @@ export class NewLocalisationPage {
         dHour: nd.getHours(),
         dMin: nd.getMinutes(),
         dSec: nd.getSeconds(),
-        //latitude: 0,longitude: 0,altitude: 0,
-        latitude: this.locationTracker.lat, longitude: this.locationTracker.lng, altitude: this.locationTracker.alt,
-        imgUrl: url
+        //latitude: 0,
+        //longitude: 0,
+        //altitude: 0,
+        latitude: this.locationTracker.lat,
+        longitude: this.locationTracker.lng,
+        altitude: this.locationTracker.alt,
+        dataImg: this.pDataImg
       })
         .then((docRef) => {
+          // only if mobile datas or wifi enabled
           console.log("Document written with ID: ", docRef.id);
 
           this.onUploadComplete();
 
         }).catch((error) => {
+
           console.error("Error adding document: ", error);
         });
     }
+
+
+    // TODO: no connexion quid de la callback
 
   }
 

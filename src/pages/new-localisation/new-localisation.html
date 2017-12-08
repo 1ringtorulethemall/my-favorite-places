@@ -4,12 +4,15 @@
   </ion-navbar>
 </ion-header>
 
+
 <ion-content>
 
-    <!-- AJOUTER UNE IMAGE-->
-    <div *ngIf="createStep==1">
+  <!-- AJOUTER UNE IMAGE-->
+
+  <ion-card class=" no-margin">
+    <div *ngIf="createStep==1" class="no-padding">
       <img src="assets/imgs/place-template.jpg" />
-      <ion-fab center middle clear>
+      <ion-fab center middle>
         <button ion-fab color="light"><ion-icon name="add"></ion-icon></button>
         <ion-fab-list side="left">
           <button ion-fab color="dark" (click)="importFromGallery()"><ion-icon name="images"></ion-icon></button>
@@ -19,19 +22,29 @@
         </ion-fab-list>
       </ion-fab>
     </div>
+  </ion-card>
 
-    <img [src]="captureDataUrl" *ngIf="captureDataUrl && createStep>1" />
+  <ion-list>
+    <ion-item>
+      <ion-note item-start>
+        nfo1
+      </ion-note>
+      nfo2
+      <ion-note item-end>
+        Completed 1/4
+      </ion-note>
+    </ion-item>
+  </ion-list>
 
+  <img src="{{pDataImg}}" *ngIf="pDataImg && createStep>1" />
 
-    <!-- To test the camera : ionic cordova run browser -->
-
-    <ion-item *ngIf="createStep==2">
-      <ion-icon name="pin" item-start large></ion-icon>
-      <h2>Géolocalisation :</h2>
-      <p>Latitude : {{locationTracker.lat}}</p>
-      <p>Longitude : {{locationTracker.lng}}</p>
-      <p>Altitude : {{locationTracker.alt}}</p>
-      <p *ngIf="locationTracker.isWatching">{{trackingNfo}}</p>
+  <ion-item *ngIf="createStep==2">
+    <ion-icon name="pin" item-start large></ion-icon>
+    <h2>Géolocalisation :</h2>
+    <p>Latitude : {{locationTracker.lat}}</p>
+    <p>Longitude : {{locationTracker.lng}}</p>
+    <p>Altitude : {{locationTracker.alt}}</p>
+    <p *ngIf="locationTracker.isWatching">{{trackingNfo}}</p>
 
     <button ion-button clear item-end large *ngIf="!locationTracker.isWatching" (click)="startTracking()">
       <ion-icon name="locate" color="danger"></ion-icon> OFF
@@ -39,7 +52,7 @@
     <button ion-button clear item-end large *ngIf="locationTracker.isWatching" (click)="stopTracking()">
       <ion-icon name="locate" color="secondary"></ion-icon> ON
     </button>
-    </ion-item>
+  </ion-item>
 
   <ion-item>
     <ion-icon name="paper" item-start large></ion-icon>
@@ -57,6 +70,6 @@
     </ion-item>
   </ion-list>
 
-  <button ion-button full color="light" (click)="addImageToPlace()">Enregistrer</button>
+  <button ion-button full color="light" (click)="addPlace()">Enregistrer</button>
 
 </ion-content>

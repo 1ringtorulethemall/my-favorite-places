@@ -22,9 +22,6 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
-
-
-
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -46,6 +43,9 @@ $colors: (
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
+$card-ios-margin-left: 0;
+$card-ios-margin-right: 0;
+$card-ios-margin-top: 0;
 
 
 
@@ -53,6 +53,9 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$card-md-margin-left: 0;
+$card-md-margin-right: 0;
+$card-md-margin-top: 0;
 
 
 
@@ -60,7 +63,9 @@ $colors: (
 // --------------------------------------------------
 // Windows only Sass variables can go here
 
-
+$card-wp-margin-left: 0;
+$card-wp-margin-right: 0;
+$card-wp-margin-top: 0;
 
 
 // App Theme

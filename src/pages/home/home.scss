@@ -2,22 +2,30 @@ page-home {
   ion-card {
     position: relative;
     text-align: center;
+    margin: 10px 10px 0px 10px !important; // because $card-md-margin-left in variables.scss
   }
 
   .card-title {
     position: absolute;
     top: 36%;
-    font-size: 2.0em;
+    font-size: 2em;
     width: 100%;
     font-weight: bold;
     color: #fff;
+
   }
 
   .card-subtitle {
-    font-size: 1.0em;
+    font-size: 0.9em;
     position: absolute;
-    top: 52%;
+    top: 54%;
     width: 100%;
     color: #fff;
   }
+
+  .text-shadow {
+    text-shadow:
+    0px 0px 1px rgba(0,0,0,0.5),
+    0px 0px 4px rgba(0,0,0,0.4);
+    }
 }

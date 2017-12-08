@@ -1,9 +1,8 @@
 import { Component, NgZone } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, AlertOptions, FabContainer } from 'ionic-angular';
 
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import firebase from 'firebase';
-import { Observable } from 'rxjs/Observable'; //TODO = delete unused
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 
 import { PlacePage } from '../place/place';
@@ -15,14 +14,12 @@ import { Place } from '../../shared/placeInterface';
 })
 export class HomePage {
 
-  firestore = firebase.storage();
   placeRef: AngularFirestoreCollection<Place>;
   af$: Observable<Place[]>;
 
   Places: Place[];
-  imgUrls: string[] = [];
 
-  constructor(public navCtrl: NavController, public afs: AngularFirestore, public zone: NgZone) {
+  constructor(public navCtrl: NavController, public afs: AngularFirestore, public zone: NgZone, public alertCtrl: AlertController) {
 
     this.placeRef = this.afs.collection<Place>('myPlaces');
     this.af$ = this.placeRef.snapshotChanges().map(actions => {
@@ -43,11 +40,40 @@ export class HomePage {
   startSynch() {
     //https://firebase.google.com/docs/database/android/offline-capabilities
   }
-  stopSynch() {  }
+  stopSynch() { }
+
+  /* place deletion ******************************************************/
+
+  deleteConfirmation(af: Place) {
+
+    let alertOpts: AlertOptions = {
+      title: 'Souhaitez-vous vraiment supprimer cette fiche :<br><i>' + af.name + '</i> ?',
+      subTitle: '(Toute suppression est définitive aussi bien online que offline)',
+      buttons: [
+        { text: 'CONSERVER' },
+        {
+          text: 'SUPPRIMER',
+          handler: () => { this.delete(af) }
+        }
+      ]
+    }
+
+    let alert = this.alertCtrl.create(alertOpts);
+    alert.present();
+
+  }
+
+  //remove place from both offline & online database
+
+  delete(af: Place) {
+    this.placeRef.doc(af.id).delete();
+  }
 
   /***************************  NAVIGATION *******************************************************************/
-  goToPlacePage(p: Place, url: string) {
-    this.navCtrl.push(PlacePage, { p: p});
+  goToPlacePage(p: Place, fab: FabContainer) {
+    fab.close();
+    this.navCtrl.push(PlacePage, { p: p });
+
   }
 
 }

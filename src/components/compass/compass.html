@@ -1,0 +1,16 @@
+<ion-grid class="top-of-map">
+  <ion-row>
+    <ion-col>
+      <div>
+        <img src="assets/imgs/compass/compass.png" [style.-webkit-transform]="rTransform" [style.-moz-transform]="rTransform" [style.transform]="rTransform" class="compass" />
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <div>
+        <ion-label>Angle au nord = {{magneticHeading}}°</ion-label>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

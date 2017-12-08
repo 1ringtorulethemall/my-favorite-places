@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController  } from 'ionic-angular';
-
 
 @Component({
   selector: 'page-notes',
@@ -8,11 +6,6 @@ import { NavController, AlertController  } from 'ionic-angular';
 })
 export class NotesPage {
 
-  constructor(public alertCtrl: AlertController) {  }
-
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad NotesPage');
-  }
+  constructor() { }
 
 }

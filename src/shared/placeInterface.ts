@@ -11,5 +11,5 @@ export interface Place {
   latitude:number;
   longitude:number;
   altitude:number;
-  imgUrl:string;
+  dataImg:string;
 }

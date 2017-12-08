@@ -6,7 +6,7 @@
 
 <ion-content class="card-background-page">
 
-  <img src={{p.imgUrl}}>
+  <img src="{{p.dataImg}}">
 
   <ion-item>
     <ion-icon name="pin" item-left large></ion-icon>
@@ -22,12 +22,12 @@
   <ion-item>
     <ion-icon name="paper" item-left large></ion-icon>
     <h2>Notes de terrain :</h2>
-    <p>{{p.note}}</p>
+    <p text-wrap>{{p.note}}</p>
   </ion-item>
 
   <ion-item>
     <ion-icon name="calendar" item-start large></ion-icon>
-    <h2>{{p.dDay}}-{{p.dMonth}}-{{p.dYear}} à {{p.dHour}}h{{p.dMin}}min{{p.dSec}}sec</h2>
+    <h2>{{p.dDay}}-{{p.dMonth}}-{{p.dYear}} à {{p.dHour}}h {{p.dMin}}min {{p.dSec}}sec</h2>
     <p>(date de création de la fiche)</p>
   </ion-item>
 

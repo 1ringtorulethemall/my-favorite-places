@@ -122,7 +122,7 @@ export class NewLocalisationPage {
         name: this.pName,
         note: this.pNote,
         dYear: nd.getFullYear(),
-        dMonth: nd.getMonth(),
+        dMonth: nd.getMonth() +1,
         dDay: nd.getDate(),
         dHour: nd.getHours(),
         dMin: nd.getMinutes(),

@@ -16,13 +16,12 @@
       <button ion-fab mini color="light"><ion-icon name="ios-document-outline"></ion-icon></button>
 
       <ion-fab-list side="left">
-        <button ion-fab color="dark"><ion-icon name="create"></ion-icon></button>
         <button ion-fab color="dark" (click)="deleteConfirmation(af)"><ion-icon name="trash"></ion-icon></button>
       </ion-fab-list>
 
       <ion-fab-list side="right">
         <button ion-fab color="dark" (click)="goToPlacePage(af,fab)"><ion-icon name="eye"></ion-icon></button>
-        <button ion-fab color="dark"><ion-icon name="walk"></ion-icon></button>
+        <button ion-fab color="dark" (click)="goToPlaceMap(af,fab)"><ion-icon name="walk"></ion-icon></button>
       </ion-fab-list>
 
     </ion-fab>

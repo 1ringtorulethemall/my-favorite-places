@@ -8,6 +8,8 @@ import { LocationTrackerProvider } from '../shared/providers/location-tracker';
 import { Geolocation } from '@ionic-native/geolocation';
 import { BackgroundGeolocation } from '@ionic-native/background-geolocation';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 import { DeviceOrientation, DeviceOrientationCompassHeading } from '@ionic-native/device-orientation';
 import { OrientationTrackerProvider } from '../shared/providers/orientation-tracker';
 import { CompassComponent } from "../components/compass/compass";
@@ -16,13 +18,15 @@ import { Camera } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthProvider } from '../shared/providers/auth';
+
 import { environment } from '../environments/environment';
 
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { HomePage } from '../pages/home/home';
 import { NewLocalisationPage } from '../pages/new-localisation/new-localisation';
-import { NotesPage } from '../pages/notes/notes';
 
 import { SettingsPage } from '../pages/settings/settings';
 import { PlacePage } from '../pages/place/place';
@@ -33,13 +37,13 @@ import { TruncatePipe } from '../shared/pipes/truncate-pipe';
 
 import { Insomnia } from '@ionic-native/insomnia';
 
+
 @NgModule({
   declarations: [
     MyApp,
     TabsPage,
     HomePage,
     NewLocalisationPage,
-    NotesPage,
     SettingsPage,
     PlacePage,
     MapOsmPage,
@@ -49,9 +53,11 @@ import { Insomnia } from '@ionic-native/insomnia';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule.enablePersistence() // Offline sync
+    AngularFirestoreModule.enablePersistence(), // Offline sync
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -59,7 +65,6 @@ import { Insomnia } from '@ionic-native/insomnia';
     TabsPage,
     HomePage,
     NewLocalisationPage,
-    NotesPage,
     SettingsPage,
     PlacePage,
     MapOsmPage,
@@ -75,7 +80,8 @@ import { Insomnia } from '@ionic-native/insomnia';
     DeviceOrientation,
     OrientationTrackerProvider,
     Insomnia,
-    Camera
+    Camera,
+    AuthProvider
   ]
 })
 export class AppModule { }

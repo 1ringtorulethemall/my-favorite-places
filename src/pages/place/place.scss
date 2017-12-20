@@ -1,3 +1,40 @@
 page-place {
+  .place-img {
+    position: relative;
+  }
 
+  .modify-button {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .text-input {
+    margin: 0 !important;
+  }
+
+  .title {
+    button,
+    ion-label,
+    p {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .subtitle {
+    button,
+    ion-label,
+    p {
+      margin-top: 0 !important;
+    }
+  }
+
+  .no-border {
+    .item-inner {
+      border: 0 !important;
+    }
+  }
+
+  .select-icon {
+    visibility: hidden !important;
+  }
 }

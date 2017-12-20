@@ -4,10 +4,9 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
 
-  <!-- AJOUTER UNE IMAGE-->
+  <!-- ADD AN IMAGE-->
 
   <ion-card class=" no-margin">
     <div *ngIf="createStep==1" class="no-padding">
@@ -62,11 +61,11 @@
 
     <ion-item>
       <ion-label stacked>Nom de la fiche:</ion-label>
-      <ion-input type="text" placeholder="Ajouter ici le nom de la fiche" [(ngModel)]="pName"></ion-input>
+      <ion-input type="text" autocomplete="on" placeholder="Ajouter ici le nom de votre endroit" [(ngModel)]="pName"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label stacked>Note de terrain :</ion-label>
-      <ion-textarea placeholder="Ajouter ici la note de terrain" [(ngModel)]="pNote"></ion-textarea>
+      <ion-textarea type="text" rows="5" autocomplete="on" placeholder="Ajouter ici votre note de terrain" [(ngModel)]="pNote"></ion-textarea>
     </ion-item>
   </ion-list>
 

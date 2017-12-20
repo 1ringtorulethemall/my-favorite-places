@@ -24,5 +24,13 @@ export const dataSettings = {
   },
   global: {
     insomnia: false
-  }
+  },
+  categories :[
+    { text: 'Champignons', value: 'champignons' },
+    { text: 'Arbres remarquables', value: 'arbresremarquables' },
+    { text: 'Coin à châtaignes', value: 'Coin à châtaignes' },
+    { text: 'Myrtilles', value: 'myrtilles' },
+    { text: 'Fourre-tout', value: 'fourre-tout' },
+    { text: 'Passage de cerfs', value: 'Passage de cerfs' }
+  ]
 };

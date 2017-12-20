@@ -2,7 +2,6 @@ import { Component, NgZone } from '@angular/core';
 import { AlertController, AlertOptions } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import firebase from 'firebase'; // pictures storage
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Camera } from '@ionic-native/camera';
 import { CameraOptions } from '@ionic-native/camera';
@@ -10,6 +9,8 @@ import { CameraOptions } from '@ionic-native/camera';
 import { LocationTrackerProvider } from '../../shared/providers/location-tracker';
 import { Place } from '../../shared/placeInterface';
 import { dataSettings } from '../../pages/settings/dataSettings';
+
+import { AuthProvider } from '../../shared/providers/auth';
 
 @Component({
   selector: 'page-new-localisation',
@@ -22,7 +23,6 @@ export class NewLocalisationPage {
   createStep: number = 0;
   trackingNfo: string = "Géolocalisation non démarrée";
 
-  storageRef = firebase.storage().ref(); //root storage reference
   placeRef: AngularFirestoreCollection<Place>;
   af$: Observable<Place[]>;
 
@@ -30,9 +30,9 @@ export class NewLocalisationPage {
   public pNote: string = '';
   pDataImg: string; // base64 image
 
-  constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone) {
+  constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone, public authProvider: AuthProvider) {
 
-    this.placeRef = this.afs.collection<Place>('myPlaces'); //firebase collection name
+    this.placeRef = this.afs.collection<Place>(this.authProvider.afAuth.auth.currentUser.uid); //firebase collection name
     this.af$ = this.placeRef.snapshotChanges().map(actions => {
       return actions.map(action => {
         const data = action.payload.doc.data() as Place;
@@ -55,14 +55,43 @@ export class NewLocalisationPage {
   importFromGallery() {
     this.createStep = 2;
 
-    //this.startTracking();
+    //aa tmp:
+    if (this.pNote && this.pNote.trim().length && this.pName && this.pName.trim().length) {
+
+      let d = new Date();
+      let nd = new Date(d.getTime());
+
+      this.placeRef.add({
+        name: this.pName,
+        note: this.pNote,
+        dYear: nd.getFullYear(),
+        dMonth: nd.getMonth() + 1,
+        dDay: nd.getDate(),
+        dHour: nd.getHours(),
+        dMin: nd.getMinutes(),
+        latitude: 0,
+        longitude: 0,
+        altitude: 0,
+        dataImg: 'fake'
+      })
+        .then((docRef) => {
+          // only if mobile datas or wifi enabled
+          console.log("Document written with ID: ", docRef.id);
+
+          this.onUploadComplete();
+
+        }).catch((error) => {
+
+          console.error("Error adding document: ", error);
+        });
+    }
+
   }
 
   // TODO: crop image
   importFromCamera() {
     this.createStep = 2;
-    //aa datas trop grosses, passe pas
-    // TODO: adjust cam options + fix acceptable image size ( @settings)
+
     const cameraOptions: CameraOptions = {
       targetWidth: dataSettings.image.width,
       targetHeight: dataSettings.image.height,
@@ -74,8 +103,6 @@ export class NewLocalisationPage {
 
     this.camera.getPicture(cameraOptions).then((dataImg) => {
       this.pDataImg = 'data:image/jpeg;base64,' + dataImg; // base64 encoded string for firecloud storage (offline workaround )
-
-      //this.startTracking();
 
     }, (err) => {
       // Handle error
@@ -122,11 +149,10 @@ export class NewLocalisationPage {
         name: this.pName,
         note: this.pNote,
         dYear: nd.getFullYear(),
-        dMonth: nd.getMonth() +1,
+        dMonth: nd.getMonth() + 1,
         dDay: nd.getDate(),
         dHour: nd.getHours(),
         dMin: nd.getMinutes(),
-        dSec: nd.getSeconds(),
         //latitude: 0,
         //longitude: 0,
         //altitude: 0,
@@ -146,9 +172,6 @@ export class NewLocalisationPage {
           console.error("Error adding document: ", error);
         });
     }
-
-
-    // TODO: no connexion quid de la callback
 
   }
 

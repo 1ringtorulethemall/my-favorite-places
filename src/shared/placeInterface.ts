@@ -7,7 +7,6 @@ export interface Place {
   dDay:number;
   dHour:number;
   dMin:number;
-  dSec:number;
   latitude:number;
   longitude:number;
   altitude:number;

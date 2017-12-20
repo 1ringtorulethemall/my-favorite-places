@@ -6,6 +6,47 @@
 
 <ion-content no-padding>
 
+<!-- TODO standby categories + save datasettings firebase
+  <ion-list>
+    <ion-list-header>
+      <ion-icon name='albums' item-start></ion-icon>
+      <h2 text-uppercase>Mes catégories d'images</h2>
+    </ion-list-header>
+    <ion-item>
+      <button ion-button clear item-end>
+        <ion-icon name="create" ></ion-icon>
+      </button>
+      <ion-label>
+        <h2>Créer une nouvelle catégorie</h2>
+        <p text-wrap><i>bbbb</i></p>
+      </ion-label>
+      </ion-item>
+    <ion-item *ngFor="let c of getData().categories">
+      <button ion-button clear item-end>
+        <ion-icon name="close" color = "danger"></ion-icon>
+      </button>
+      <ion-label>
+
+        <h2>{{c.text}}</h2>
+        </ion-label>
+    </ion-item>
+  </ion-list>
+-->
+
+  <ion-list>
+    <ion-list-header>
+      <ion-icon name='log-out' item-start></ion-icon>
+      <h2 text-uppercase>Déconnexion</h2>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>
+        <h2>Me déconnecter de mon compte</h2>
+        <p text-wrap><i>Je note que j'aurai besoin de wifi ou de réseau mobile pour me reconnecter.Mes géolocalisations sont bien sûr conservées.</i></p>
+      </ion-label>
+      <ion-toggle color="energized" [(ngModel)]="logged" (ngModelChange)="confirmLogOut()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
   <ion-list>
     <ion-list-header>
       <ion-icon name='moon' item-start></ion-icon>

@@ -5,8 +5,14 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 
-import { PlacePage } from '../place/place';
+import { AuthProvider } from '../../shared/providers/auth';
+
+import { dataSettings } from '../../pages/settings/dataSettings';
+import { PlacePage } from '../../pages/place/place';
+import { MapOsmPage } from '../map/osm/map-osm';
+import { MapGooglePage } from '../map/google/map-google';
 import { Place } from '../../shared/placeInterface';
+
 
 @Component({
   selector: 'page-home',
@@ -19,9 +25,9 @@ export class HomePage {
 
   Places: Place[];
 
-  constructor(public navCtrl: NavController, public afs: AngularFirestore, public zone: NgZone, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public afs: AngularFirestore, public zone: NgZone, public alertCtrl: AlertController, public authProvider: AuthProvider) {
 
-    this.placeRef = this.afs.collection<Place>('myPlaces');
+    this.placeRef = this.afs.collection<Place>(this.authProvider.afAuth.auth.currentUser.uid);
     this.af$ = this.placeRef.snapshotChanges().map(actions => {
       return actions
         .map(action => {
@@ -35,12 +41,6 @@ export class HomePage {
       });
 
   }
-
-  // TODO:
-  startSynch() {
-    //https://firebase.google.com/docs/database/android/offline-capabilities
-  }
-  stopSynch() { }
 
   /* place deletion ******************************************************/
 
@@ -74,6 +74,17 @@ export class HomePage {
     fab.close();
     this.navCtrl.push(PlacePage, { p: p });
 
+  }
+
+  goToPlaceMap(p: Place, fab: FabContainer) {
+    fab.close();
+
+    if (dataSettings.maps.osm) {
+      this.navCtrl.push(MapOsmPage, { lat: p.latitude, lng: p.longitude, name: p.name });
+    }
+    else {
+      this.navCtrl.push(MapGooglePage)
+    }
   }
 
 }

@@ -29,6 +29,8 @@ npm install --save @ionic-native/device-orientation
 ionic cordova plugin add cordova-plugin-insomnia
 npm install --save @ionic-native/insomnia
 
+npm install --save @angular/animations
+
 (See package.json or config.xml for ^~= plugins versions )
 
 ### Please set your firebase configuration in `environment.ts`

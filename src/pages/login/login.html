@@ -1,0 +1,115 @@
+<ion-content padding class="auth-page">
+  <img [@logoFly]="loginState" src="assets/imgs/login/logo.png" />
+
+  <!-- LOGIN -->
+  <form [formGroup]="loginForm" (submit)="login()" novalidate *ngIf="step=='login'">
+
+    <ion-item class="form-button" [class.invalid]="!loginForm.controls.email.valid && loginForm.controls.email.touched" [class.valid]="loginForm.controls.email.valid && loginForm.controls.email.touched" [@formItem1FadeIn]="loginState">
+      <ion-label>Email :</ion-label>
+      <ion-input formControlName="email" type="email">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid &&
+     loginForm.controls.email.touched&&loginState=='in'">
+      <p>Please enter a valid email address.</p>
+    </ion-item>
+
+    <ion-item class="form-button" [class.invalid]="!loginForm.controls.password.valid && loginForm.controls.password.touched" [class.valid]="loginForm.controls.password.valid && loginForm.controls.password.touched" [@formItem2FadeIn]="loginState">
+      <ion-label>Password :</ion-label>
+      <ion-input formControlName="password" type="password">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid
+    && loginForm.controls.password.touched&&loginState=='in'">
+      <p>Your password needs more than 6 characters.</p>
+    </ion-item>
+
+    <ion-item class="forgot-pwd" [@formItem3FadeIn]="loginState">
+      <button (click)="goToResetPassword()">
+        Forgot password?
+      </button>
+    </ion-item>
+
+    <button ion-button class="login-button" [@formItem4FadeIn]="loginState" type="submit" [disabled]="!loginForm.valid">
+      Login with email & password
+    </button>
+
+    <div class="create-account" [@formItem5FadeIn]="loginState">
+      <span>Don't have an account?</span><button (click)="goToSignup()">create one in two secs!</button>
+    </div>
+
+  </form>
+
+  <!-- SIGNUP -->
+  <form [formGroup]="signupForm" (submit)="signup()" novalidate *ngIf="step=='signup'">
+
+    <ion-item class="form-button" [class.invalid]="!signupForm.controls.email.valid && signupForm.controls.email.touched" [class.valid]="signupForm.controls.email.valid && signupForm.controls.email.touched" [@formItem1FadeIn]="signupState">
+      <ion-label>Email :</ion-label>
+      <ion-input formControlName="email" type="email">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid &&
+     signupForm.controls.email.touched&&signupState=='in'">
+      <p>Please enter a valid email address.</p>
+    </ion-item>
+
+    <ion-item class="form-button" [class.invalid]="!signupForm.controls.password.valid && signupForm.controls.password.touched" [class.valid]="signupForm.controls.password.valid && signupForm.controls.password.touched" [@formItem2FadeIn]="signupState">
+      <ion-label>Password :</ion-label>
+      <ion-input formControlName="password" type="password">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid
+    && signupForm.controls.password.touched&&signupState=='in'">
+      <p>Your password needs more than 6 characters.</p>
+    </ion-item>
+
+    <ion-item class="forgot-pwd" [@formItem3FadeIn]="signupState">
+      <button (click)="goToResetPassword()">
+        Forgot password?
+      </button>
+    </ion-item>
+
+    <button ion-button class="login-button" [@formItem4FadeIn]="signupState" type="submit" [disabled]="!signupForm.valid">
+      Sign up with email & password
+    </button>
+
+    <div class="create-account" [@formItem5FadeIn]="signupState">
+      <span>Already have an account?</span><button (click)="goToLogin()">Login here!</button>
+    </div>
+
+  </form>
+
+  <!-- RESET PASSWORD -->
+  <form [formGroup]="resetPasswordForm" (submit)="resetPassword()" novalidate *ngIf="step=='reset-pwd'">
+
+    <ion-item class="form-button" [class.invalid]="!resetPasswordForm.controls.email.valid && resetPasswordForm.controls.email.touched"
+      [class.valid]="resetPasswordForm.controls.email.valid && resetPasswordForm.controls.email.touched" [@formItem1FadeIn]="resetPasswordState">
+      <ion-label>Email :</ion-label>
+      <ion-input formControlName="email" type="email">
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="error-message" *ngIf="!resetPasswordForm.controls.email.valid &&
+     resetPasswordForm.controls.email.touched&&resetPasswordState=='in'">
+      <p>Please enter a valid email address.</p>
+    </ion-item>
+
+    <button ion-button class="reset-password-button" type="submit" [disabled]="!resetPasswordForm.valid" [@formItem2FadeIn]="resetPasswordState">
+      Reset Your Password
+    </button>
+
+    <div class="create-account" [@formItem3FadeIn]="resetPasswordState">
+      <span>Already have an account?</span><button (click)="goToLogin()">Login here!</button>
+    </div>
+
+    <div class="create-account" [@formItem4FadeIn]="resetPasswordState">
+      <span>Don't have an account?</span><button (click)="goToSignup()">create one in two secs!</button>
+    </div>
+
+  </form>
+
+</ion-content>

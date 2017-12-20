@@ -123,6 +123,12 @@ export class LoginPage {
   //step : string="signup";
   //step : string="reset-pwd";
 
+  loadingOptions: any = {
+    spinner: 'dots',
+    cssClass: 'transparent-loading',
+    content: 'Connecting...'
+  }
+
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public authProvider: AuthProvider, formBuilder: FormBuilder) {
 
     this.loginForm = formBuilder.group({
@@ -158,7 +164,7 @@ export class LoginPage {
 
   goToSignup(): void {
     this.loginState = "out";
-    this.resetPasswordState ="out"
+    this.resetPasswordState = "out"
     this.signupState = "in";
     this.loginForm.reset();
     this.resetPasswordForm.reset();
@@ -174,7 +180,7 @@ export class LoginPage {
         `Form is not valid yet, current value: ${this.loginForm.value}`
       );
     } else {
-      const loading: Loading = this.loadingCtrl.create();
+      const loading: Loading = this.loadingCtrl.create(this.loadingOptions);
       loading.present();
 
       const email = this.loginForm.value.email;
@@ -194,6 +200,7 @@ export class LoginPage {
         alert.present();
       }
     }
+
   }
 
 
@@ -205,7 +212,7 @@ export class LoginPage {
         `Form is not valid yet, current value: ${this.signupForm.value}`
       );
     } else {
-      const loading: Loading = this.loadingCtrl.create();
+      const loading: Loading = this.loadingCtrl.create(this.loadingOptions);
       loading.present();
 
       const email = this.signupForm.value.email;
@@ -234,7 +241,7 @@ export class LoginPage {
 
   goToLogin(): void {
     this.signupState = "out";
-    this.resetPasswordState ="out"
+    this.resetPasswordState = "out"
     this.loginState = "in";
     this.signupForm.reset();
     this.resetPasswordForm.reset();
@@ -245,7 +252,7 @@ export class LoginPage {
 
   /* TODO
     async createDefaultUserSettings(): Promise<void> {
-      const loading: Loading = this.loadingCtrl.create();
+      const loading: Loading = this.loadingCtrl.create(this.loadingOptions);
       loading.present();
       try {
         this.dataSettingsProvider.createDefaultUserSettings();
@@ -272,42 +279,42 @@ export class LoginPage {
         `Form is not valid yet, current value: ${this.resetPasswordForm.value}`
       );
     } else {
-      const loading: Loading = this.loadingCtrl.create();
+      const loading: Loading = this.loadingCtrl.create(this.loadingOptions);
       loading.present();
 
-      const email = this.resetPasswordForm.value.email;
+            const email = this.resetPasswordForm.value.email;
 
-      try {
-        await this.authProvider.resetPassword(email);
-        await loading.dismiss();
-        const alert: Alert = this.alertCtrl.create({
-          message: 'Check your inbox for a password reset link',
-          buttons: [
-            { text: 'Cancel', role: 'cancel' },
-            {
-              text: 'Ok',
-              handler: data => {
-                this.navCtrl.pop();
-              }
+            try {
+              await this.authProvider.resetPassword(email);
+              await loading.dismiss();
+              const alert: Alert = this.alertCtrl.create({
+                message: 'Check your inbox for a password reset link',
+                buttons: [
+                  { text: 'Cancel', role: 'cancel' },
+                  {
+                    text: 'Ok',
+                    handler: data => {
+                      this.navCtrl.pop();
+                    }
+                  }
+                ]
+              });
+              alert.present();
+            } catch (error) {
+              await loading.dismiss();
+              const alert: Alert = this.alertCtrl.create({
+                message: "resetPassword error : " +error.message,
+                buttons: [{ text: 'Ok', role: 'cancel' }]
+              });
+              alert.present();
             }
-          ]
-        });
-        alert.present();
-      } catch (error) {
-        await loading.dismiss();
-        const alert: Alert = this.alertCtrl.create({
-          message: "resetPassword error : " +error.message,
-          buttons: [{ text: 'Ok', role: 'cancel' }]
-        });
-        alert.present();
-      }
     }
   }
 
   goToResetPassword(): void {
     this.signupState = "out";
     this.loginState = "out";
-    this.resetPasswordState ="in";
+    this.resetPasswordState = "in";
     this.signupForm.reset();
     this.loginForm.reset();
     setTimeout(() => {

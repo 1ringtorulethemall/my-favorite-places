@@ -126,7 +126,7 @@ export class LoginPage {
   loadingOptions: any = {
     spinner: 'dots',
     cssClass: 'transparent-loading',
-    content: 'Connecting...'
+    content: 'Connecting...' 
   }
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public authProvider: AuthProvider, formBuilder: FormBuilder) {

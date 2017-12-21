@@ -126,7 +126,7 @@ export class LoginPage {
   loadingOptions: any = {
     spinner: 'dots',
     cssClass: 'transparent-loading',
-    content: 'Connecting...' 
+    content: 'Connecting...'
   }
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public alertCtrl: AlertController, public authProvider: AuthProvider, formBuilder: FormBuilder) {
@@ -251,6 +251,8 @@ export class LoginPage {
   }
 
   /* TODO
+  // see : https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/
+  // see Upsert
     async createDefaultUserSettings(): Promise<void> {
       const loading: Loading = this.loadingCtrl.create(this.loadingOptions);
       loading.present();

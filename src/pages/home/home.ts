@@ -32,13 +32,21 @@ export class HomePage {
       return actions
         .map(action => {
           const data = action.payload.doc.data() as Place;
+          // +const settings = ...
           const id = action.payload.doc.id;
           return { id, ...data };
         });
     })
       .do(data => {
         this.Places = data as Place[];
-      });
+      })/*
+      .do (settings => {
+        mySettings = settings
+      })
+      */
+      ;
+
+
 
   }
 

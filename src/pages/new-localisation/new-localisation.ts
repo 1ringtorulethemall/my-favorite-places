@@ -6,6 +6,8 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Camera } from '@ionic-native/camera';
 import { CameraOptions } from '@ionic-native/camera';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { LocationTrackerProvider } from '../../shared/providers/location-tracker';
 import { Place } from '../../shared/placeInterface';
 import { dataSettings } from '../../pages/settings/dataSettings';
@@ -22,17 +24,17 @@ export class NewLocalisationPage {
   alertOpts: AlertOptions;
   createStep: number = 0;
   trackingNfo: string = "Géolocalisation non démarrée";
+  public newPlaceForm: FormGroup;
 
   placeRef: AngularFirestoreCollection<Place>;
   af$: Observable<Place[]>;
-
-  public pName: string = '';
-  public pNote: string = '';
-  pDataImg: string; // base64 image
-
   totPlaces: number = 0;
 
-  constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone, public authProvider: AuthProvider) {
+  //public pName: string = '';
+  //public pNote: string = '';
+  pDataImg: string; // base64 image
+
+  constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone, public authProvider: AuthProvider, formBuilder: FormBuilder) {
 
     this.placeRef = this.afs.collection<Place>(this.authProvider.afAuth.auth.currentUser.uid); //firebase collection name
 
@@ -62,6 +64,19 @@ export class NewLocalisationPage {
         })*/
       })
 
+    this.newPlaceForm = formBuilder.group({
+      name: ['', Validators.compose([Validators.required])],
+      note: ['', Validators.compose([Validators.required])]
+      //,
+      //lat: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]+[.][0-9]+')])]
+    });
+
+  }
+
+  datasCompleted(): boolean {
+    if (!this.pDataImg) return false;
+    if (this.locationTracker.lat == 0 || this.locationTracker.lng == 0) return false;
+    return true;
   }
 
   ionViewDidLoad() { this.initialize(); }
@@ -69,13 +84,15 @@ export class NewLocalisationPage {
   initialize() {
     this.createStep = 1;
     this.pDataImg = undefined;
+    this.newPlaceForm.reset();
+    this.locationTracker.resetDatas();
+    if(this.locationTracker.isWatching) this.stopTracking();
   }
 
   /* STEP1 Choose a file - camera vs local storage image gallery *************/
 
   importFromGallery() {
     this.createStep = 2;
-    console.log("aa importFromGallery()")
     //aa tmp:
     let d = new Date();
     let nd = new Date(d.getTime());
@@ -103,7 +120,6 @@ export class NewLocalisationPage {
 
         console.error("Error adding document: ", error);
       });
-
 
   }
 
@@ -158,23 +174,17 @@ export class NewLocalisationPage {
 
   addPlace() {
 
-    if (this.pNote && this.pNote.trim().length && this.pName && this.pName.trim().length && this.locationTracker.lat && this.locationTracker.lng) {
-      //if (this.pNote && this.pNote.trim().length && this.pName && this.pName.trim().length) {
-
       let d = new Date();
       let nd = new Date(d.getTime());
 
       this.placeRef.add({
-        name: this.pName,
-        note: this.pNote,
+        name: this.newPlaceForm.value.name,
+        note: this.newPlaceForm.value.note,
         dYear: nd.getFullYear(),
         dMonth: nd.getMonth() + 1,
         dDay: nd.getDate(),
         dHour: nd.getHours(),
         dMin: nd.getMinutes(),
-        //latitude: 0,
-        //longitude: 0,
-        //altitude: 0,
         latitude: this.locationTracker.lat,
         longitude: this.locationTracker.lng,
         altitude: this.locationTracker.alt,
@@ -191,7 +201,6 @@ export class NewLocalisationPage {
 
           console.error("Error adding document: ", error);
         });*/
-    }
 
   }
 

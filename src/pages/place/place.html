@@ -17,7 +17,10 @@
     <button ion-button clear item-end (click)="modifyName()">
       <ion-icon name="create"></ion-icon>
     </button>
-    <h2>{{p.name}}</h2>
+    <h2>
+      <ion-icon name="bookmark" item-left ></ion-icon>
+      {{p.name}}
+    </h2>
   </ion-item>
 
   <ion-item *ngIf="nameUpdating">

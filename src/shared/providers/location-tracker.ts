@@ -93,4 +93,10 @@ export class LocationTrackerProvider {
     this.watch.unsubscribe();
   }
 
+  resetDatas() {
+    this.lat = 0;
+    this.lng = 0;
+    this.alt = 0;
+  }
+
 }

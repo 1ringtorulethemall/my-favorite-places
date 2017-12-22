@@ -6,11 +6,12 @@
 
 <ion-content>
 
-  <!-- ADD AN IMAGE-->
+  <!-- Add an image-->
 
   <ion-card class=" no-margin">
     <div *ngIf="createStep==1" class="no-padding">
       <img src="assets/imgs/place-template.jpg" />
+      <div class="card-title text-shadow">Add an image</div>
       <ion-fab center middle>
         <button ion-fab color="light"><ion-icon name="add"></ion-icon></button>
         <ion-fab-list side="left">
@@ -23,52 +24,53 @@
     </div>
   </ion-card>
 
-  <ion-list>
-    <ion-item>
-      <ion-note item-start>
-        nfo1
-      </ion-note>
-      nfo2
-      <ion-note item-end>
-        Completed 1/4
-      </ion-note>
-    </ion-item>
-  </ion-list>
-
   <img src="{{pDataImg}}" *ngIf="pDataImg && createStep>1" />
 
-  <ion-item *ngIf="createStep==2">
-    <ion-icon name="pin" item-start large></ion-icon>
-    <h2>Géolocalisation :</h2>
-    <p>Latitude : {{locationTracker.lat}}</p>
-    <p>Longitude : {{locationTracker.lng}}</p>
-    <p>Altitude : {{locationTracker.alt}}</p>
-    <p *ngIf="locationTracker.isWatching">{{trackingNfo}}</p>
+  <form [formGroup]="newPlaceForm" (submit)="addPlace()" novalidate>
 
-    <button ion-button clear item-end large *ngIf="!locationTracker.isWatching" (click)="startTracking()">
-      <ion-icon name="locate" color="danger"></ion-icon> OFF
-    </button>
-    <button ion-button clear item-end large *ngIf="locationTracker.isWatching" (click)="stopTracking()">
-      <ion-icon name="locate" color="secondary"></ion-icon> ON
-    </button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="paper" item-start large></ion-icon>
-    <h2>Ajouter des informations :</h2>
-  </ion-item>
-  <ion-list inset>
-
-    <ion-item>
-      <ion-label stacked>Nom de la fiche:</ion-label>
-      <ion-input type="text" autocomplete="on" placeholder="Ajouter ici le nom de votre endroit" [(ngModel)]="pName"></ion-input>
+    <!-- Place name -->
+    <ion-item class="no-border title">
+      <h2>
+        <ion-icon name="bookmark" item-left ></ion-icon>
+        Nom de la fiche :
+    </h2>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Note de terrain :</ion-label>
-      <ion-textarea type="text" rows="5" autocomplete="on" placeholder="Ajouter ici votre note de terrain" [(ngModel)]="pNote"></ion-textarea>
+      <ion-input type="text" autocomplete="on"  placeholder="Ajouter ici le nom de votre fiche" formControlName="name" type="text"></ion-input>
     </ion-item>
-  </ion-list>
 
-  <button ion-button full color="light" (click)="addPlace()">Enregistrer</button>
+    <!-- Geolocalisation-->
+    <ion-item>
+      <button ion-button clear item-end large *ngIf="!locationTracker.isWatching" (click)="startTracking()" >
+      <ion-icon name="locate" color="danger"></ion-icon>
+    </button>
+      <button ion-button clear item-end large *ngIf="locationTracker.isWatching" (click)="stopTracking()" >
+      <ion-icon name="locate" color="secondary"></ion-icon>
+    </button>
+      <h2>
+        <ion-icon name="pin" item-left ></ion-icon>
+        Position :
+      </h2>
+      <!--<ion-input formControlName="lat" type="text"  placeholder={{locationTracker.lat}}></ion-input>-->
+      <p>Latitude : {{locationTracker.lat}}</p>
+      <p>Longitude : {{locationTracker.lng}}</p>
+      <p>Altitude : {{locationTracker.alt}}m</p>
+      <p>{{trackingNfo}}</p>
+    </ion-item>
+
+    <!-- Note -->
+    <ion-item class="no-border">
+      <h2>
+        <ion-icon name="paper" item-left ></ion-icon>
+        Notes de terrain :
+    </h2>
+    </ion-item>
+    <ion-item>
+      <ion-textarea type="text" rows="5" autocomplete="on"  placeholder="Ajouter ici votre note de terrain" formControlName="note" type="text"></ion-textarea>
+    </ion-item>
+
+
+    <button ion-button class="save-button" type="submit" [disabled]="!newPlaceForm.valid || !datasCompleted()">Save</button>
+  </form>
 
 </ion-content>

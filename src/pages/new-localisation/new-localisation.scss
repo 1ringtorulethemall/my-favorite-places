@@ -3,4 +3,37 @@ page-new-localisation {
     position: relative;
     text-align: center;
   }
+
+  .card-title {
+    position: absolute;
+    top: 68%;
+    font-size: 1.2em;
+    width: 100%;
+  }
+
+  .title {
+    ion-label {
+      margin-bottom: 0 !important;
+      margin-top: 4px !important;
+    }
+  }
+
+  .text-input {
+    margin-bottom: 0 !important;
+    margin-top: 0px !important;
+  }
+
+  .no-border {
+    .item-inner {
+      border: 0 !important;
+    }
+  }
+
+  .save-button {
+    width: 100%;
+    height: 46px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    background-color: #3cb029;
+  }
 }

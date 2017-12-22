@@ -30,8 +30,6 @@ export class NewLocalisationPage {
   af$: Observable<Place[]>;
   totPlaces: number = 0;
 
-  //public pName: string = '';
-  //public pNote: string = '';
   pDataImg: string; // base64 image
 
   constructor(public alertCtrl: AlertController, private camera: Camera, public locationTracker: LocationTrackerProvider, public afs: AngularFirestore, public zone: NgZone, public authProvider: AuthProvider, formBuilder: FormBuilder) {
@@ -67,8 +65,6 @@ export class NewLocalisationPage {
     this.newPlaceForm = formBuilder.group({
       name: ['', Validators.compose([Validators.required])],
       note: ['', Validators.compose([Validators.required])]
-      //,
-      //lat: ['', Validators.compose([Validators.required, Validators.pattern('[0-9]+[.][0-9]+')])]
     });
 
   }

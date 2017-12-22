@@ -13,7 +13,8 @@
     </ion-fab>
   </div>
 
-  <ion-item *ngIf="!nameUpdating" class="no-border title">
+  <!-- Name -->
+  <ion-item *ngIf="!nameUpdating" class=" title">
     <button ion-button clear item-end (click)="modifyName()">
       <ion-icon name="create"></ion-icon>
     </button>
@@ -33,6 +34,9 @@
     <ion-input type="text" rows="1" [(ngModel)]="p.name" autocomplete="on"></ion-input>
   </ion-item>
 
+  <!-- Categories -->
+  <!-- pour name mettre no-border <ion-item *ngIf="!nameUpdating" class="no-border title"> -->
+  <!--
   <ion-item class="subtitle">
     <button ion-button clear item-end (click)="modifyCategories()" *ngIf="!categoriesUpdating">
       <ion-icon name="create"></ion-icon>
@@ -42,38 +46,44 @@
       <ion-option *ngFor="let c of availableCategories" [value]="c">{{c.text}}</ion-option>
     </ion-select>
   </ion-item>
+-->
 
-  <ion-item>
-    <button ion-button clear item-end (click)="modifyPosition()" *ngIf="!posUpdating">
-      <ion-icon name="create"></ion-icon>
-    </button>
-    <button ion-button clear item-end (click)="cancelPositionUpdate()" *ngIf="posUpdating" large>
-      <ion-icon name="close" color="danger" class="modify-button"></ion-icon>
-    </button>
-    <button ion-button clear item-end (click)="updatePosition({latitude:p.latitude,longitude:p.longitude,altitude:p.altitude})" *ngIf="posUpdating" large class="modify-button">
-      <ion-icon name="checkmark" color="secondary"></ion-icon>
-    </button>
-    <h2>
+  <!-- Position -->
+  <form [formGroup]="posForm" (submit)="updatePosition()" novalidate>
+    <ion-item>
+      <button ion-button clear item-end type="submit" (click)="modifyPosition()" *ngIf="!posUpdating">
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button ion-button clear item-end (click)="cancelPositionUpdate()" *ngIf="posUpdating" large>
+        <ion-icon name="close" color="danger" class="modify-button"></ion-icon>
+      </button>
+      <button ion-button clear item-end type="submit" [disabled]="!posForm.valid" *ngIf="posUpdating" large class="modify-button">
+        <ion-icon name="checkmark" color="secondary"></ion-icon>
+      </button>
+      <h2>
       <ion-icon name="pin" item-left ></ion-icon>
       Position :
-    </h2>
-    <p *ngIf="!posUpdating">Latitude : {{p.latitude}}</p>
-    <p *ngIf="!posUpdating">Longitude : {{p.longitude}}</p>
-    <p *ngIf="!posUpdating">Altitude : {{p.altitude}}m</p>
-  </ion-item>
-  <ion-item *ngIf="posUpdating">
-    <ion-label color="dark" fixed>Latitude :</ion-label>
-    <ion-input type="text" rows="1" [(ngModel)]="p.latitude"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="posUpdating">
-    <ion-label color="dark" fixed>Longitude :</ion-label>
-    <ion-input type="text" rows="1" [(ngModel)]="p.longitude"></ion-input>
-  </ion-item>
-  <ion-item *ngIf="posUpdating">
-    <ion-label color="dark" fixed>Altitude :</ion-label>
-    <ion-input type="text" rows="1" [(ngModel)]="p.altitude"></ion-input>
-  </ion-item>
+      </h2>
+      <p *ngIf="!posUpdating">Latitude : {{p.latitude}}</p>
+      <p *ngIf="!posUpdating">Longitude : {{p.longitude}}</p>
+      <p *ngIf="!posUpdating">Altitude : {{p.altitude}}m</p>
+    </ion-item>
 
+    <ion-item *ngIf="posUpdating">
+      <ion-label color="dark" fixed>Latitude :</ion-label>
+      <ion-input formControlName="lat" type="text" rows="1"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="posUpdating">
+      <ion-label color="dark" fixed>Longitude :</ion-label>
+      <ion-input  formControlName="lng" type="text" rows="1"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="posUpdating">
+      <ion-label color="dark" fixed>Altitude :</ion-label>
+      <ion-input formControlName="alt" type="text" rows="1"></ion-input>
+    </ion-item>
+  </form>
+
+  <!-- Note -->
   <ion-item [class.no-border]="noteUpdating">
     <button ion-button clear item-end (click)="ModifyNote()" *ngIf="!noteUpdating">
       <ion-icon name="create"></ion-icon>
@@ -95,6 +105,7 @@
     <ion-textarea type="text" rows="5" autocomplete="on" [(ngModel)]="p.note"></ion-textarea>
   </ion-item>
 
+  <!-- Date -->
   <ion-item>
     <h2>
       <ion-icon name="calendar" item-start></ion-icon>

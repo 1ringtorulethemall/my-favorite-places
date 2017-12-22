@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavParams, NavController, ToastController, Select } from 'ionic-angular';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { Place } from '../../shared/placeInterface';
 import { dataSettings } from '../../pages/settings/dataSettings';
 import { MapOsmPage } from '../map/osm/map-osm';
@@ -34,15 +36,18 @@ export class PlacePage {
 
   posUpdating: boolean = false;
   posDatas: PosDatas = { latitude: 0, longitude: 0, altitude: 0 };
+  public posForm: FormGroup;
 
   noteUpdating: boolean = false;
   noteContent: string;
 
   @ViewChild('selectCat') selectCat: Select;
 
-  constructor(public navParams: NavParams, public navCtrl: NavController, public authProvider: AuthProvider, public afs: AngularFirestore, public toastCtrl: ToastController) {
+  constructor(public navParams: NavParams, public navCtrl: NavController, public authProvider: AuthProvider, public afs: AngularFirestore, public toastCtrl: ToastController, public formBuilder: FormBuilder) {
 
     this.p = navParams.get('p');
+
+    this.posForm = this.formBuilder.group({});
 
   }
 
@@ -67,6 +72,9 @@ export class PlacePage {
   }
 
   updateName(dataObj: any): Promise<any> {
+
+    //tmp workaround because no callback off line - If no solution, use cordova-plugin-network-information
+    this.nameUpdating = false;
 
     return new Promise((resolve, reject) => {
       this.afs
@@ -105,7 +113,10 @@ export class PlacePage {
   }
 
   updateCategories(): Promise<any> {
-    //TODO openselect + nochange --> ni update ni cancel (donc le crayon) ne se remettent
+
+    //tmp workaround because no callback off line - If no solution, use cordova-plugin-network-information
+    this.categoriesUpdating = false;
+    this.selectCat.selectedText = " "; // see css : .select-icon { visibility: hidden !important;}
 
     return new Promise((resolve, reject) => {
       this.afs
@@ -157,9 +168,23 @@ export class PlacePage {
     this.posDatas.latitude = this.p.latitude;
     this.posDatas.longitude = this.p.longitude;
     this.posDatas.altitude = this.p.altitude;
+
+    this.posForm = this.formBuilder.group({
+      lat: [this.p.latitude, Validators.compose([Validators.required, Validators.pattern('[0-9]+[.][0-9]+')])],
+      lng: [this.p.longitude, Validators.compose([Validators.required, Validators.pattern('[0-9]+[.][0-9]+')])],
+      alt: [this.p.altitude, Validators.compose([Validators.required, Validators.pattern('[0-9]+')])]
+    });
+
   }
 
-  updatePosition(dataObj: any): Promise<any> {
+  updatePosition(): Promise<any> {
+
+    //tmp workaround because no callback off line - If no solution, use cordova-plugin-network-information
+    this.posUpdating = false;
+    this.p.latitude = this.posForm.value.lat;
+    this.p.longitude = this.posForm.value.lng;
+    this.p.altitude = this.posForm.value.alt;
+    let dataObj = { latitude: this.p.latitude, longitude: this.p.longitude, altitude: this.p.altitude }
 
     return new Promise((resolve, reject) => {
       this.afs
@@ -198,6 +223,9 @@ export class PlacePage {
   }
 
   updateNote(dataObj: any): Promise<any> {
+
+    //tmp workaround because no callback off line - If no solution, use cordova-plugin-network-information
+    this.noteUpdating = false;
 
     return new Promise((resolve, reject) => {
       this.afs

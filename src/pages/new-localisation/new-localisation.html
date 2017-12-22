@@ -7,7 +7,6 @@
 <ion-content>
 
   <!-- Add an image-->
-
   <ion-card class=" no-margin">
     <div *ngIf="createStep==1" class="no-padding">
       <img src="assets/imgs/place-template.jpg" />
@@ -51,7 +50,6 @@
         <ion-icon name="pin" item-left ></ion-icon>
         Position :
       </h2>
-      <!--<ion-input formControlName="lat" type="text"  placeholder={{locationTracker.lat}}></ion-input>-->
       <p>Latitude : {{locationTracker.lat}}</p>
       <p>Longitude : {{locationTracker.lng}}</p>
       <p>Altitude : {{locationTracker.alt}}m</p>
